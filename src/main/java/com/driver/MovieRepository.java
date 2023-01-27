@@ -1,15 +1,19 @@
 package com.driver;
 
-import com.driver.Director;
-import com.driver.Movie;
 import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Repository
 public class MovieRepository {
-    Map<String, Movie> movies = new HashMap<>();
-    Map<String, Director> directors = new HashMap<>();
-    Map<String, List<String>> pairs = new HashMap<>();
+    private Map<String, Movie> movies;
+    private Map<String, Director> directors;
+    private Map<String, List<String>> pairs;
+
+    public MovieRepository() {
+        this.movies = new HashMap<>();
+        this.directors = new HashMap<>();
+        this.pairs = new HashMap<>();
+    }
 
     public void save(Movie movie) {
         movies.put(movie.getName(),movie);
@@ -21,7 +25,9 @@ public class MovieRepository {
 
     public void save(String movie, String director) {
         if(movies.containsKey(movie) && directors.containsKey(director)){
-            List<String> currentMovies = new ArrayList<>();
+            movies.put(movie, movies.get(movie));
+            directors.put(director, directors.get(director));
+            List<String> currentMovies = new ArrayList<String>();
             if(pairs.containsKey(director)){
                 currentMovies = pairs.get(director);
                 currentMovies.add(movie);
@@ -45,9 +51,9 @@ public class MovieRepository {
         return moviesList;
     }
 
-    public List<Movie> getAllMovies() {
-        List<Movie> allMovies = new ArrayList<>();
-        for(Movie movie : movies.values()){
+    public List<String> getAllMovies() {
+        List<String> allMovies = new ArrayList<>();
+        for(String movie : movies.keySet()){
             allMovies.add(movie);
         }
         return allMovies;

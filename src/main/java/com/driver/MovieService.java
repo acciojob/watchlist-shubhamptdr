@@ -1,8 +1,6 @@
 package com.driver;
 
-import com.driver.Director;
-import com.driver.Movie;
-import com.driver.MovieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,11 +8,8 @@ import java.util.Map;
 
 @Service
 public class MovieService {
-    private final MovieRepository movieRepository;
-
-    public MovieService(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
-    }
+    @Autowired
+    MovieRepository movieRepository;
 
     public void save(Movie movie) {
         movieRepository.save(movie);
@@ -39,12 +34,12 @@ public class MovieService {
         return movieRepository.getMoviesByDirectorName(director);
     }
 
-    public List<Movie> getAllMovies() {
+    public List<String> getAllMovies() {
         return movieRepository.getAllMovies();
     }
 
-    public void deleteDirectorMovieByName(String movie) {
-        movieRepository.deleteDirectorMovieByName(movie);
+    public void deleteDirectorMovieByName(String director) {
+        movieRepository.deleteDirectorMovieByName(director);
     }
 
     public void deleteAllDirectorsAndMovies() {
