@@ -1,6 +1,7 @@
 package com.driver;
 
 import org.springframework.stereotype.Repository;
+
 import java.util.*;
 
 @Repository
@@ -16,23 +17,18 @@ public class MovieRepository {
     }
 
     public void save(Movie movie) {
-        movies.put(movie.getName(),movie);
+        movies.put(movie.getName(), movie);
     }
 
     public void save(Director director) {
-        directors.put(director.getName(),director);
+        directors.put(director.getName(), director);
     }
 
     public void save(String movie, String director) {
-        if(movies.containsKey(movie) && directors.containsKey(director)){
-            movies.put(movie, movies.get(movie));
-            directors.put(director, directors.get(director));
-            List<String> currentMovies = new ArrayList<String>();
-            if(pairs.containsKey(director)){
-                currentMovies = pairs.get(director);
-                currentMovies.add(movie);
-                pairs.put(director,currentMovies);
-            }
+        if (movies.containsKey(movie) && directors.containsKey(director)) {
+            List<String> currentMovies = pairs.getOrDefault(director, new ArrayList<>());
+            currentMovies.add(movie);
+            pairs.put(director, currentMovies);
         }
     }
 
@@ -43,9 +39,10 @@ public class MovieRepository {
     public Director getDirectorByName(String director) {
         return directors.get(director);
     }
+
     public List<String> getMoviesByDirectorName(String director) {
         List<String> moviesList = new ArrayList<>();
-        if(pairs.containsKey(director)){
+        if (pairs.containsKey(director)) {
             moviesList = pairs.get(director);
         }
         return moviesList;
@@ -53,7 +50,7 @@ public class MovieRepository {
 
     public List<String> getAllMovies() {
         List<String> allMovies = new ArrayList<>();
-        for(String movie : movies.keySet()){
+        for (String movie : movies.keySet()) {
             allMovies.add(movie);
         }
         return allMovies;
@@ -62,16 +59,16 @@ public class MovieRepository {
     public void deleteDirectorMovieByName(String director) {
 
         List<String> moviesList = new ArrayList<>();
-        if(pairs.containsKey(director)){
+        if (pairs.containsKey(director)) {
             moviesList = pairs.get(director);
-            for (String movie : moviesList){
-                if(movies.containsKey(movie)){
+            for (String movie : moviesList) {
+                if (movies.containsKey(movie)) {
                     movies.remove(movie);
                 }
             }
             pairs.remove(director);
         }
-        if(pairs.containsKey(director)){
+        if (pairs.containsKey(director)) {
             pairs.remove(director);
         }
 
@@ -79,15 +76,15 @@ public class MovieRepository {
 
     public void deleteAllDirectorsAndMovies() {
         HashSet<String> moviesSet = new HashSet<>();
-        for (String director : pairs.keySet()){
-            for (String movie:pairs.get(director)){
+        for (String director : pairs.keySet()) {
+            for (String movie : pairs.get(director)) {
                 moviesSet.add(movie);
             }
             pairs.remove(director);
             directors.remove(director);
         }
-        for (String movie:moviesSet){
-            if(movies.containsKey(movie)){
+        for (String movie : moviesSet) {
+            if (movies.containsKey(movie)) {
                 movies.remove(movie);
             }
         }
