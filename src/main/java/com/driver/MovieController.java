@@ -1,8 +1,8 @@
-package com.driver.controllers;
+package com.driver;
 
 import com.driver.Director;
 import com.driver.Movie;
-import com.driver.services.MovieService;
+import com.driver.MovieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
